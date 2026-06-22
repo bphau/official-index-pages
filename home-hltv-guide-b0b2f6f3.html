@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLTV 官网 · 知识库入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f2f4f6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1e2a3a;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* header / hero 区 */
+        .hero {
+            margin-bottom: 3rem;
+            text-align: center;
+            padding: 0 0.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: #0f1a2b;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .sub {
+            font-size: 1.05rem;
+            color: #4a5b6f;
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.5);
+            padding: 0.3rem 1rem;
+            display: inline-block;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            font-weight: 400;
+        }
+
+        .hero p {
+            margin-top: 0.8rem;
+            color: #3d4e62;
+            font-size: 0.95rem;
+        }
+
+        /* 卡片网格 —— 目录感布局 */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.8rem;
+            margin: 2rem 0;
+        }
+
+        @media (min-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.6rem 1.4rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e6eaef;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid #eef2f6;
+            color: #1f2b3b;
+            letter-spacing: -0.01em;
+        }
+
+        .card p, .card li {
+            font-size: 0.92rem;
+            color: #2d3e52;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .card ul li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            color: #6a7f96;
+            font-weight: 700;
+        }
+
+        .card .label-tip {
+            display: inline-block;
+            font-size: 0.75rem;
+            background: #e6ecf3;
+            color: #2a3f57;
+            padding: 0.15rem 0.7rem;
+            border-radius: 12px;
+            margin-top: 0.35rem;
+            font-weight: 500;
+        }
+
+        .card .highlight-link {
+            word-break: break-all;
+            color: #1a5c9e;
+            font-weight: 500;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: #b3c9e1;
+        }
+
+        .card .highlight-link:hover {
+            color: #0b3b6b;
+            text-decoration-color: #1a5c9e;
+        }
+
+        /* 特殊卡片 提示区 + FAQ 摘要 */
+        .card-accent {
+            background: #fafbfc;
+            border-left: 3px solid #7c8fa6;
+        }
+
+        .faq-item {
+            margin-top: 1rem;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1b2a3c;
+            margin-bottom: 0.25rem;
+        }
+
+        .faq-answer {
+            font-size: 0.88rem;
+            color: #40556b;
+            padding-left: 0.2rem;
+        }
+
+        .btn-like {
+            display: inline-block;
+            background: #eef2f7;
+            border: 1px solid #d5dde8;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #2f4259;
+            margin-top: 0.6rem;
+            cursor: default;
+        }
+
+        /* 说明区 + 提示区混合 */
+        .info-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            margin: 2.2rem 0;
+        }
+
+        .info-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1.6rem;
+            flex: 1 1 260px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .info-box h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: #1f2f42;
+        }
+
+        .info-box p {
+            font-size: 0.9rem;
+            color: #364b61;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e0e6ee;
+            border-radius: 14px;
+            padding: 0.2rem 0.9rem;
+            font-size: 0.75rem;
+            color: #24415e;
+            margin-right: 0.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        /* 提示区 独立卡片 */
+        .notice-area {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #8499b2;
+            padding: 1.5rem 1.6rem;
+            border-radius: 14px;
+            margin: 2rem 0 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .notice-area h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1d2c3f;
+            margin-bottom: 0.5rem;
+        }
+
+        .notice-area p {
+            font-size: 0.9rem;
+            color: #2e4157;
+        }
+
+        .notice-area .small-meta {
+            font-size: 0.8rem;
+            color: #6b7f94;
+            margin-top: 0.5rem;
+        }
+
+        /* 相关信息区 */
+        .related {
+            background: #f8f9fb;
+            border: 1px solid #dee5ed;
+            border-radius: 14px;
+            padding: 1.5rem 1.6rem;
+            margin: 2rem 0 1.8rem;
+        }
+
+        .related h3 {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            color: #1f3145;
+        }
+
+        .related-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.6rem;
+        }
+
+        .related-item {
+            font-size: 0.88rem;
+            color: #2f4b66;
+            background: #edf1f6;
+            padding: 0.3rem 1rem;
+            border-radius: 16px;
+            border: 1px solid #d9e1eb;
+        }
+
+        .related-item a {
+            color: #1f5a8e;
+            text-decoration: none;
+        }
+
+        .related-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* 页脚 */
+        .footer-note {
+            margin-top: 3rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #d8e0ea;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #5a6f84;
+        }
+
+        .footer-note span {
+            background: #e7ecf3;
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+        }
+
+        a {
+            color: #1d5b99;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- hero / 页面标题 -->
+        <div class="hero">
+            <h1>HLTV 知识库 · 快速识别</h1>
+            <div class="sub">竞技数据 · 赛事中心 · 玩家手册</div>
+            <p>如果你正在寻找专业、全面的 CS 竞技信息聚合，<a href="https://home-hltv.com" style="font-weight: 600;">hltv官网</a> 是绕不开的第一站。下面的卡片帮你理清它的定位与功能。</p>
+        </div>
+
+        <!-- 目录感卡片网格 -->
+        <div class="grid">
+            <!-- 卡片 1: 介绍区 -->
+            <div class="card">
+                <h2>🧭 站点定位</h2>
+                <p>这是一个以反恐精英全球攻势（CS）为核心的赛事数据与新闻平台。覆盖职业战队、选手统计、比赛录像、排名变动以及社区讨论。<span class="label-tip">全球主要赛事</span></p>
+                <p style="margin-top: 0.8rem;">多数用户将它用作赛果查询和选手履历库，每天都有大量爱好者通过 <a href="https://home-hltv.com" class="highlight-link">hltv官网</a> 获取第一手对战信息。</p>
+            </div>
+
+            <!-- 卡片 2: 特点区 -->
+            <div class="card">
+                <h2>⚙️ 核心功能</h2>
+                <ul>
+                    <li>实时比分与地图 BP 记录</li>
+                    <li>选手 rating / ADR / KAST 数据库</li>
+                    <li>历史赛事档案 & 高光时刻</li>
+                    <li>战队世界排名与趋势</li>
+                </ul>
+                <div class="btn-like">数据粒度细</div>
+            </div>
+
+            <!-- 卡片 3: 场景区 -->
+            <div class="card">
+                <h2>🎯 适用场景</h2>
+                <p>想回顾昨天某场 BO3 的选手对位数据？研究某支队伍近半年的地图胜率？或者只是赛前看看两队交手记录。</p>
+                <p style="margin-top: 0.6rem;">这些在 <a href="https://home-hltv.com" class="highlight-link">hltv官网</a> 都有清晰的入口，几乎不需要额外筛选。</p>
+            </div>
+        </div>
+
+        <!-- 说明区 + 提示区 混合布局 (两个并排) -->
+        <div class="info-section">
+            <div class="info-box">
+                <h3>📋 内容说明</h3>
+                <p>页面内的数据与新闻均由官方或合作编辑维护，更新频率稳定。赛事期间通常几分钟内就会出比分与基础统计。</p>
+                <p style="margin-top: 0.6rem;">小提示：选手页面的「近期表现」折线图对判断状态很有帮助。</p>
+            </div>
+            <div class="info-box">
+                <h3>🔔 提示区</h3>
+                <p>如果你刚接触这个平台，可以先从「赛事」或「排名」板块入手。左侧导航栏的筛选器能按时间、赛事级别快速定位。</p>
+                <div>
+                    <span class="tag">新手友好</span>
+                    <span class="tag">数据向</span>
+                    <span class="tag">移动端适配</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提示区（第二条，更详细） -->
+        <div class="notice-area">
+            <h3>💡 关于使用</h3>
+            <p>很多用户反馈第一次打开 <a href="https://home-hltv.com" style="font-weight: 500; text-decoration: underline; text-underline-offset: 2px;">hltv官网</a> 时觉得信息密度大，其实右上角的搜索框可以直接搜选手或队伍名字。另外「直播」板块聚合了多个平台的流，适合赛时集中观看。</p>
+            <div class="small-meta">* 部分历史赛事录像需要注册免费账户才能查看完整 demos。</div>
+        </div>
+
+        <!-- FAQ 摘要区 (放在相关信息区前面) -->
+        <div class="card card-accent" style="margin-bottom: 2rem;">
+            <h2>❓ 常见疑问 · 摘要</h2>
+            <div class="faq-item">
+                <div class="faq-question">Q: 如何查看某位选手过去三个月的 rating？</div>
+                <div class="faq-answer">在选手个人页面里选择「统计」标签，时间范围可以自定义，默认显示近三个月。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 赛事页面里的“高级过滤”怎么用？</div>
+                <div class="faq-answer">可以组合地图、队伍、阶段等条件，适合做针对性复盘。过滤后的结果可以生成短链接分享。</div>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.88rem; color: #3a516b;">
+                更多细节可以直接在 <a href="https://home-hltv.com" class="highlight-link">hltv官网</a> 的帮助区或论坛查找。
+            </div>
+        </div>
+
+        <!-- 相关信息区 -->
+        <div class="related">
+            <h3>📎 相关信息</h3>
+            <div class="related-grid">
+                <span class="related-item">📊 实时排名</span>
+                <span class="related-item">🗓️ 赛事日历</span>
+                <span class="related-item">🧑‍💻 选手数据库</span>
+                <span class="related-item">📺 直播聚合</span>
+                <span class="related-item">📁 历史 Demo</span>
+                <span class="related-item">🔄 转会记录</span>
+            </div>
+            <p style="font-size: 0.85rem; margin-top: 0.8rem; color: #475e76;">以上板块均可在 <a href="https://home-hltv.com" style="font-weight: 500;">hltv官网</a> 顶部导航或「更多」菜单中找到，结构比较清晰。</p>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer-note">
+            <span>知识库入口 · 基于公开信息整理 · 页面仅供介绍参考</span>
+        </div>
+    </div>
+</body>
+</html>
