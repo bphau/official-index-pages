@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLTV 中国站 · 赛事数据与日常查询</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f4f5f7;
+            color: #1e1e2a;
+            line-height: 1.65;
+            padding: 0 1.2rem;
+        }
+
+        .wrapper {
+            max-width: 800px;
+            margin: 2.2rem auto 3.5rem;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        /* 深色头图 */
+        .hero {
+            background: #0f172a;
+            padding: 4rem 2.5rem 3rem;
+            text-align: center;
+            color: #e6edf5;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            margin-bottom: 0.6rem;
+            color: #f1f5f9;
+        }
+
+        .hero .sub {
+            font-size: 1rem;
+            color: #94a3b8;
+            border-top: 1px solid #2a3a54;
+            display: inline-block;
+            padding-top: 0.8rem;
+            margin-top: 0.4rem;
+        }
+
+        .hero .sub i {
+            font-style: italic;
+            color: #7ba7e0;
+        }
+
+        /* 正文区 */
+        .content {
+            padding: 2.8rem 2.5rem 3rem;
+        }
+
+        .content p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .content a {
+            color: #2563eb;
+            text-decoration: none;
+            border-bottom: 1px dotted #a5c0f5;
+            transition: border 0.2s, background 0.15s;
+        }
+
+        .content a:hover {
+            border-bottom: 2px solid #2563eb;
+            background: #f0f6ff;
+        }
+
+        /* 引用块 */
+        .quote-note {
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            padding: 1.3rem 1.6rem;
+            margin: 2rem 0 1.8rem;
+            border-radius: 6px 16px 16px 6px;
+            font-size: 0.95rem;
+            color: #1e293b;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .quote-note strong {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .quote-note .tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.15rem 0.7rem;
+            border-radius: 12px;
+            margin-right: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* 场景小卡片（差异化） */
+        .scene-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.8rem 0 2rem;
+        }
+
+        .scene-item {
+            flex: 1 1 180px;
+            background: #f9fafc;
+            border: 1px solid #e9edf3;
+            border-radius: 16px;
+            padding: 1.2rem 1.2rem 1rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .scene-item:hover {
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+            border-color: #cdd9f0;
+        }
+
+        .scene-item h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #0b1e33;
+        }
+
+        .scene-item p {
+            font-size: 0.88rem;
+            color: #3f4a5c;
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+
+        /* faq 摘要 */
+        .faq-mini {
+            margin: 2rem 0 1rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.8rem;
+        }
+
+        .faq-mini details {
+            margin-bottom: 0.8rem;
+            border: 1px solid #e8ecf3;
+            border-radius: 12px;
+            padding: 0.4rem 1.2rem 0.6rem;
+            background: #fafcff;
+        }
+
+        .faq-mini summary {
+            font-weight: 500;
+            cursor: pointer;
+            color: #0f172a;
+            padding: 0.4rem 0;
+            font-size: 0.95rem;
+        }
+
+        .faq-mini details p {
+            margin: 0.5rem 0 0.8rem;
+            font-size: 0.92rem;
+            color: #2d3a4f;
+        }
+
+        /* 底部访问句 */
+        .access-line {
+            margin-top: 2.4rem;
+            padding-top: 1.8rem;
+            border-top: 1px dashed #d0d8e6;
+            font-size: 1rem;
+        }
+
+        .access-line .arrow {
+            display: inline-block;
+            margin-left: 0.25rem;
+            color: #2563eb;
+        }
+
+        /* 响应式 */
+        @media (max-width: 580px) {
+            .hero {
+                padding: 2.8rem 1.5rem 2.2rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .content {
+                padding: 2rem 1.4rem 2.5rem;
+            }
+            .scene-grid {
+                flex-direction: column;
+            }
+            .scene-item {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- 深色头图 -->
+    <div class="hero">
+        <h1>CS 数据日志 · 查询与对照</h1>
+        <div class="sub">基于 <i>hltv官网</i> 的日常信息路径</div>
+    </div>
+
+    <!-- 正文区 -->
+    <div class="content">
+
+        <p>日常查阅 CS 赛事数据，其实更像一种资料整理习惯。多数玩家反复打开 <a href="https://cn-hltv.com">hltv官网</a>，并非为了某一项特定功能，而是在选手页、战队排名与近期赛果之间来回对照，逐渐搭建自己对当前版本局势的理解。这种「散点式」使用方式，恰好是信息类网站最扎实的使用场景。</p>
+
+        <p>以一次常规查询为例：你想确认某位步枪手过去三个月的线下赛 rating，同时对比他在地图池中的胜率变化。通常在 <a href="https://cn-hltv.com">hltv官网</a> 的选手档案里，可以筛选时间区间和赛事等级，而战队页面则提供阵容变动记录。两处信息交叉验证，比单纯看一条推文要可靠得多。</p>
+
+        <!-- 引用提示块 -->
+        <div class="quote-note">
+            <span class="tag">笔记</span>
+            <strong>延伸阅读习惯</strong> — 很多深度分析帖的原始数据，其实都来自 <a href="https://cn-hltv.com">hltv官网</a> 的统计模块。比赛日之后，先看 HLTV 的赛事摘要，再回看 demo 细节，是不少玩家沉淀理解的路径。
+        </div>
+
+        <p>除了基础数据，网站的论坛部分（虽然界面简朴）有时会藏着有价值的讨论。比如某张地图的战术迭代，或者选手转会后状态变化的早期讨论。这些内容不经过算法推荐，却经常成为后续分析的起点。如果能配合 <a href="https://cn-hltv.com">hltv官网</a> 的统计表格阅读，会有更完整的上下文。</p>
+
+        <!-- 场景卡片 差异化 -->
+        <div class="scene-grid">
+            <div class="scene-item">
+                <h4>选手数据对照</h4>
+                <p>将不同赛事的 rating、KPR 与 IMPACT 并排比较，快速定位状态波动。</p>
+            </div>
+            <div class="scene-item">
+                <h4>队伍近期战绩</h4>
+                <p>查看过去三个月地图胜负记录，结合对手强度判断版本适应度。</p>
+            </div>
+            <div class="scene-item">
+                <h4>赛事档案延伸</h4>
+                <p>从一场 Major 出发，顺藤摸瓜查阅关联预选赛及选手历史数据。</p>
+            </div>
+        </div>
+
+        <p>另外，需要注意数据的时间标识。很多查询矛盾实际上来自样本窗口不一致 —— 同一名选手在赛季初和赛季末的数据可能有明显差异。使用 <a href="https://cn-hltv.com">hltv官网</a> 时，养成检查筛选器时间的习惯，能避免很多误读。这也是为什么我们总建议「先定时间范围，再看具体数值」。</p>
+
+        <!-- FAQ 摘要 (简洁) -->
+        <div class="faq-mini">
+            <details>
+                <summary>数据更新频率是怎样的？</summary>
+                <p>大型赛事结束后数小时内，选手数据与比赛详情即会同步。日常天梯数据根据平台对接情况略有延迟，建议以赛事页面为准。</p>
+            </details>
+            <details>
+                <summary>为什么有时战队阵容显示不一致？</summary>
+                <p>可能存在短期租借或替补名单未及时收录，可对照赛事官方出场记录。通常 <a href="https://cn-hltv.com">hltv官网</a> 会在 1–2 天内更新正式变动。</p>
+            </details>
+        </div>
+
+        <!-- 访问句 (自然嵌入 无诱导) -->
+        <div class="access-line">
+            <span>📎 日常查询的落脚点，始终是那个熟悉的地址：</span>
+            <a href="https://cn-hltv.com">hltv官网</a><span class="arrow"> ↗</span>
+            <span style="color:#5f6b7e; margin-left: 0.5rem;">— 保持对照，保持清晰。</span>
+        </div>
+
+    </div>
+    <!-- end content -->
+</div>
+<!-- end wrapper -->
+</body>
+</html>
